@@ -1,0 +1,1 @@
+export const NOTIF_QUEUE = 'NOTIFICATION_QUEUE';

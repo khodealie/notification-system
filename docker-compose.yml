@@ -1,0 +1,25 @@
+services:
+  postgres:
+    container_name: 'notif-postgres'
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - "${PG_PORT:-5432}:5432"
+    env_file: .env
+    environment:
+      POSTGRES_USER:     ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB:       ${PG_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    container_name: 'notif-redis'
+    image: redis:7
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+
+volumes:
+  pgdata:
