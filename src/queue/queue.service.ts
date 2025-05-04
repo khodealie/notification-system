@@ -4,6 +4,7 @@ import { Queue } from 'bullmq';
 import { DataSource } from 'typeorm';
 import { NotificationRepository } from '../cores/notification-core/repositories/notification.repository';
 import { NotificationAttempt } from '../cores/notification-core/entities/notification-attempt.entity';
+import { Notification } from '../cores/notification-core/entities/notification.entity';
 import { NotificationStatus } from '../shared/enums/notification-status.enum';
 import { ChannelFactory } from '../modules/channel/channel.factory';
 import { NOTIF_QUEUE } from './queue.constants';
@@ -89,7 +90,7 @@ export class QueueService {
 
   private async markAsSent(id: string, response: unknown) {
     await this.ds.transaction(async (manager) => {
-      await manager.save('Notification', {
+      await manager.save(Notification, {
         id,
         status: NotificationStatus.SENT,
       });
@@ -102,8 +103,8 @@ export class QueueService {
 
   private async markAsFailed(id: string, error: Error) {
     await this.ds.transaction(async (manager) => {
-      await manager.increment('Notification', { id }, 'retries', 1);
-      await manager.save('Notification', {
+      await manager.increment(Notification, { id }, 'retries', 1);
+      await manager.save(Notification, {
         id,
         status: NotificationStatus.FAILED,
       });

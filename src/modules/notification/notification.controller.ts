@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { SendNotificationDto } from '../../shared/dtos/send-notification.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Notifications')
 @Controller('notifications')
 export class NotificationController {
   constructor(private readonly svc: NotificationService) {}
